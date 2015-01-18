@@ -60,6 +60,14 @@ class GameBoard {
 // Setup default board array with blank squares
 var gameBoard = GameBoard(size: 5, difficulty: .Easy)
 
+func squareIsEmpty (itemArray: [Int], putNewItemHere: Int) -> Bool {
+    for (index, item) in enumerate(laddersArray) {
+        if item == putNewItemHere {
+            return false
+        }
+    }
+    return true
+}
 
 // Step 1 - Put ladders in random positions in grid
 func generateRandomPositionForLadders() -> [Int] {
@@ -67,7 +75,7 @@ func generateRandomPositionForLadders() -> [Int] {
     var laddersArray = [Int]()
     for ladder in 1...laddersCount {
         var randomSquare = Int(arc4random_uniform(UInt32(gameBoard.board.count)))
-        while randomSquare == 0 || randomSquare == gameBoard.board.count || randomSquare == (gameBoard.board.count - 1) {
+        while randomSquare == 0 || randomSquare == gameBoard.board.count || randomSquare == (gameBoard.board.count - 1) || !squareIsEmpty(laddersArray, randomSquare) {
             randomSquare = Int(arc4random_uniform(UInt32(gameBoard.board.count)))
         }
         laddersArray.append(randomSquare)
@@ -75,17 +83,33 @@ func generateRandomPositionForLadders() -> [Int] {
     }
     return laddersArray
 }
-generateRandomPositionForLadders()
+let laddersArray = generateRandomPositionForLadders()
+
+// Step 2 - put snakes in random position in grid
+
+
+
+func generateRandomPositionForSnakes(laddersArray: [Int]) -> [Int] {
+    var snakesCount = Int(Double(gameBoard.board.count) * gameBoard.percentSnakes)
+    var snakesArray = [Int]()
+    for snake in 1...snakesCount {
+        var randomSquare = Int(arc4random_uniform(UInt32(gameBoard.board.count)))
+        while randomSquare == 0 || randomSquare == gameBoard.board.count || !squareIsEmpty(laddersArray, randomSquare) {
+            randomSquare = Int(arc4random_uniform(UInt32(gameBoard.board.count)))
+        }
+        snakesArray.append(randomSquare)
+        
+    }
+    return snakesArray
+}
+
+generateRandomPositionForSnakes(laddersArray)
 
 
 
 
 
 
-
-
-
-var snakesCount = Int(Double(gameBoard.board.count) * gameBoard.percentLadders)
 
 
 
