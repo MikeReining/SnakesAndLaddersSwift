@@ -61,7 +61,7 @@ class GameBoard {
 var gameBoard = GameBoard(size: 5, difficulty: .Easy)
 
 func squareIsEmpty (itemArray: [Int], putNewItemHere: Int) -> Bool {
-    for (index, item) in enumerate(laddersArray) {
+    for (index, item) in enumerate(itemArray) {
         if item == putNewItemHere {
             return false
         }
@@ -83,11 +83,13 @@ func generateRandomPositionForLadders() -> [Int] {
     }
     return laddersArray
 }
+
+squareIsEmpty([12,16,4], 4)
+
+
 let laddersArray = generateRandomPositionForLadders()
 
 // Step 2 - put snakes in random position in grid
-
-
 
 func generateRandomPositionForSnakes(laddersArray: [Int]) -> [Int] {
     var snakesCount = Int(Double(gameBoard.board.count) * gameBoard.percentSnakes)
@@ -103,14 +105,30 @@ func generateRandomPositionForSnakes(laddersArray: [Int]) -> [Int] {
     return snakesArray
 }
 
-generateRandomPositionForSnakes(laddersArray)
+let snakesArray = generateRandomPositionForSnakes(laddersArray)
+
+// Step 2 - update game board with random bumps for snakes and ladders
+
+for ladder in laddersArray {
+    var distanceToFinish = gameBoard.board.count - ladder
+    var randomLadderBump = Int((Float(Int(arc4random_uniform(UInt32(40))) + 20) / 100) * Float(distanceToFinish))
+    gameBoard.board[ladder - 1] = randomLadderBump
+}
+
+
+for snake in snakesArray {
+    var distanceFromStart = snake
+    var randomLadderBump = Int((Float(Int(arc4random_uniform(UInt32(40))) + 20) / 100) * Float(distanceFromStart))
+    var randomSnakeBump = randomLadderBump - randomLadderBump - randomLadderBump
+    gameBoard.board[snake - 1] = randomSnakeBump
+}
+
+
+for square in gameBoard.board{
+    println("\(square)")
+}
 
 
 
 
 
-
-
-
-
-// Step 2 - Calculate random boost value for snakes
