@@ -27,20 +27,13 @@ class GameBoard {
     var columns: Int
     var board: [Int]
     var difficulty: Difficulty
-    var percentSnakes: Double
-    var percentLadders: Double
+    var percentSnakes: Double = 0.17
+    var percentLadders: Double = 0.17
     init (size: Int, difficulty: Difficulty) {
         self.rows = size
         self.columns = size
         self.difficulty = difficulty
-        self.percentLadders = 0.17
-        self.percentSnakes = 0.17
-        board = Array(count: rows * columns, repeatedValue: 0)
-    }
-    
-    // MARK: Convenience constructor to generate new game
-    func startNewGameWithSize(size: Int, withDifficulty: Difficulty) {
-        switch withDifficulty {
+        switch difficulty {
         case .Easy:
             self.percentLadders = 0.25
             self.percentSnakes = 0.1
@@ -53,6 +46,12 @@ class GameBoard {
         default:
             println("Wrong difficulty entered")
         }
+
+        board = Array(count: rows * columns, repeatedValue: 0)
+    }
+    
+    // MARK: Convenience constructor to generate new game
+    func startNewGameWithSize(size: Int, withDifficulty: Difficulty) {
         self.rows = size
         self.columns = size
         board = Array(count: rows * columns, repeatedValue: 0)
@@ -100,7 +99,9 @@ class Player {
 // MARK: Functions to generate random game board
 
 // Setup default board array with blank squares
-var gameBoard = GameBoard(size: 5, difficulty: .Easy)
+var gameBoard = GameBoard(size: 5, difficulty: .Medium)
+gameBoard.percentLadders
+gameBoard.percentSnakes
 
 // While placing snakes and ladders, always make sure the square is still empty.  If not, generate a new random number
 var gameBoardWithItems = [Int]()
